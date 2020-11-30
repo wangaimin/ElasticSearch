@@ -55,4 +55,4 @@
       4. translog设置：默认情况下，如果index.translog.durability被设置为async的话，Elasticsearch每5秒钟同步并提交一次translog，5秒内如果服务器挂了，5秒内的数据会丢失。或者如果被设置为request（默认）的话，每次index，delete，update，bulk请求时就同步一次translog。更准确地说，如果设置为request, Elasticsearch只会在成功地在主分片和每个已分配的副本分片上fsync并提交translog之后，才会向客户端报告index、delete、update、bulk成功。
    5. 段合并
       1. 由于自动刷新流程每秒会创建一个新的段 ，这样会导致短时间内的段数量暴增。而段数目太多会带来较大的麻烦。 每一个段都会消耗文件句柄、内存和cpu运行周期。更重要的是，每个搜索请求都必须轮流检查每个段；所以段越多，搜索也就越慢。
-      2. Elasticsearch通过在后台进行段合并来解决这个问题。小的段被合并到大的段，然后这些大的段再被合并到更大的段。
+      2. Elasticsearch通过在后台进行段合并来解决这个问题。小的段被合并到大的段，然后这些大的段再被合并到更大的段,而那些旧的索引段会被抛弃并从磁盘中删除。
